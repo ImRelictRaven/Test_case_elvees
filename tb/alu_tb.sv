@@ -20,6 +20,7 @@ module alu_tb;
 
   // тесты
   `include "../tests/alu_add_basic_test.sv"
+  `include "../tests/alu_sub_basic_test.sv"
   `include "../tests/alu_all_ops_3_5_test.sv"
 
   // счётчики для статистики тестов
@@ -59,15 +60,13 @@ module alu_tb;
     // 1) Обзорный тест по всем инструкциям для A_log=3, B_log=5
     test_all_ops_3_5();
 
-    // 2) ADD
+    // 2) ADD (сложение)
     test_add_basic(success);
+    if (success) passed_tests++; else failed_tests++;
 
-    if (success) begin
-      passed_tests++;
-    end
-    else begin
-      failed_tests++;
-    end
+    // 3) SUBTRACT (вычитание)
+    test_sub_basic(success);
+    if (success) passed_tests++; else failed_tests++;
   endtask
 
   task automatic report_results();

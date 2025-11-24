@@ -19,6 +19,8 @@ build: $(EXE)
 
 $(EXE): $(SRC_RTL) $(SRC_TB) $(C_SOURCES) | $(OBJ_DIR)
 	$(VERILATOR) -Wall -sv --cc $(SRC_RTL) $(SRC_TB) \
+	  -Wno-DECLFILENAME -Wno-TIMESCALEMOD -Wno-GENUNNAMED \
+	  -Wno-UNUSEDPARAM -Wno-UNUSEDSIGNAL -Wno-EOFNEWLINE \
 	  --top-module $(TOP) \
 	  --exe $(C_SOURCES)
 	$(MAKE) -C $(OBJ_DIR) -f V$(TOP).mk -j$$(nproc)
