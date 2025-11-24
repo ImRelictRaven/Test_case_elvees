@@ -18,7 +18,11 @@ module alu_tb;
     .nGo    (alu_intf.nGo)
   );
 
-  // счётчики для будущей статистики тестов
+  // тесты
+  `include "../tests/alu_add_basic_test.sv"
+  `include "../tests/alu_all_ops_3_5_test.sv"
+
+  // счётчики для статистики тестов
   int unsigned passed_tests;
   int unsigned failed_tests;
 
@@ -34,23 +38,38 @@ module alu_tb;
     $finish;
   end
 
-  // базовая инициализация интерфейса и счётчиков
   task automatic initialize_test();
-    // обнуление сигналов интерфейса
-    // начальные сообщения в лог
+    alu_intf.a    = '0;
+    alu_intf.b    = '0;
+    alu_intf.Cin  = 1'b1;
+    alu_intf.mode = 1'b0;
+    alu_intf.sel  = 4'b0000;
+
     passed_tests = 0;
     failed_tests = 0;
+
     $display("[%0t] Testbench initialization done", $time);
   endtask
 
-  // запуск отдельных тестов для операций АЛУ
   task automatic run_tests();
-    // здесь позже будут вызываться тесты
+    bit success;
 
-    $display("[%0t] run_tests() is not implemented yet", $time);
+    $display("[%0t] Starting run_tests()", $time);
+
+    // 1) Обзорный тест по всем инструкциям для A_log=3, B_log=5
+    test_all_ops_3_5();
+
+    // 2) ADD
+    test_add_basic(success);
+
+    if (success) begin
+      passed_tests++;
+    end
+    else begin
+      failed_tests++;
+    end
   endtask
 
-  // итоговый отчёт по результатам тестирования
   task automatic report_results();
     $display("\n=== TEST SUMMARY ===");
     $display("  Passed tests : %0d", passed_tests);
