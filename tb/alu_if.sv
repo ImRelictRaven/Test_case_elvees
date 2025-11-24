@@ -41,6 +41,19 @@ interface alu_if;
     input  nGo
   );
 
+  // Modport для монитора (пассивное наблюдение всех сигналов)
+  modport monitor_mp (
+    input a,
+    input b,
+    input Cin,
+    input mode,
+    input sel,
+    input result,
+    input Cout,
+    input nBo,
+    input nGo
+  );
+
 endinterface
 
 

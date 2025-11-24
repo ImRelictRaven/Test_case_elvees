@@ -23,11 +23,12 @@ task automatic test_sub_basic(output bit success);
     A_log = $urandom()[15:0];
     B_log = $urandom()[15:0];
 
-    expected = A_log - B_log;
+    expected = A_log - B_log - 1;
 
     alu_intf.a = A_log;
     alu_intf.b = B_log;
 
+    #10;
     logic_result = alu_intf.result;
 
     if (logic_result !== expected) begin

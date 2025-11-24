@@ -27,6 +27,7 @@ task automatic test_and_basic(output bit success);
     alu_intf.a = A_log;
     alu_intf.b = B_log;
 
+    #10;
     logic_result = alu_intf.result;
 
     if (logic_result !== expected) begin

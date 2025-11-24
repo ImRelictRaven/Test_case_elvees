@@ -30,6 +30,7 @@ task automatic test_add_basic(output bit success);
     alu_intf.a = A_log;
     alu_intf.b = B_log;
 
+    #10;
     logic_result = alu_intf.result;
     //вместо assert стоит if чтобы тест не падал
     if (logic_result !== expected) begin

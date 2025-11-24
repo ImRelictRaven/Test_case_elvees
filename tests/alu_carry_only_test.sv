@@ -20,6 +20,7 @@ task automatic test_add_carry_only(output bit success);
   alu_intf.a = A_log;
   alu_intf.b = B_log;
 
+  #10;
   logic_result = alu_intf.result;
 
   // для переполнения ожидаем Cout = 0

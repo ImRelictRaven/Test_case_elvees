@@ -17,7 +17,7 @@ task automatic test_all_ops_3_5();
         alu_intf.mode = mode[0];
         alu_intf.sel  = sel[3:0];
         alu_intf.Cin  = cin[0];
-
+        #10;
         $display("[%0t] mode=%0d sel=%0h Cin=%0b -> result=%h",
                  $time, mode[0], sel[3:0], cin[0], alu_intf.result);
       end

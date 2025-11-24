@@ -35,6 +35,9 @@ module alu_tb;
     .nGo    (dut_nGo_wire)
   );
 
+  // Monitor — пассивно наблюдает изменения на интерфейсе
+  alu_monitor monitor_i (.mon_if(alu_intf));
+
   // тесты
   `include "../tests/alu_add_basic_test.sv"
   `include "../tests/alu_sub_basic_test.sv"
@@ -79,7 +82,7 @@ module alu_tb;
     bit success;
 
     $display("[%0t] Starting run_tests()", $time);
-
+    #1;
     // 1) Обзорный тест по всем инструкциям для A_log=3, B_log=5
     test_all_ops_3_5();
 

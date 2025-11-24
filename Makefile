@@ -2,7 +2,7 @@ VERILATOR ?= verilator
 TOP       ?= alu_tb
 
 SRC_RTL    := rtl/top_alu_16.v rtl/74181.v rtl/74182_CLA.v
-SRC_TB     := tb/alu_if.sv tb/alu_tb.sv
+SRC_TB     := tb/alu_if.sv tb/alu_monitor.sv tb/alu_tb.sv
 SRC_TESTS  := $(wildcard tests/*.sv)
 C_SOURCES  := sim_main.cpp
 
@@ -19,12 +19,12 @@ $(OBJ_DIR):
 build: $(EXE)
 
 $(EXE): $(SRC_RTL) $(SRC_TB) $(SRC_TESTS) $(C_SOURCES) | $(OBJ_DIR)
-	$(VERILATOR) -Wall -sv --cc $(SRC_RTL) $(SRC_TB) \
+	$(VERILATOR) -Wall -sv --cc --timing $(SRC_RTL) $(SRC_TB) \
 	  -Wno-DECLFILENAME -Wno-TIMESCALEMOD -Wno-GENUNNAMED \
 	  -Wno-UNUSEDPARAM -Wno-UNUSEDSIGNAL -Wno-EOFNEWLINE \
 	  --top-module $(TOP) \
 	  --exe $(C_SOURCES)
-	$(MAKE) -C $(OBJ_DIR) -f V$(TOP).mk -j$$(nproc)
+	$(MAKE) -C $(OBJ_DIR) -f V$(TOP).mk -j$$(nproc) CXX="g++-13 -std=gnu++20 -fcoroutines"
 
 run: $(EXE)
 	$(EXE)
