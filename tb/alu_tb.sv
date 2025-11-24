@@ -21,6 +21,7 @@ module alu_tb;
   // тесты
   `include "../tests/alu_add_basic_test.sv"
   `include "../tests/alu_sub_basic_test.sv"
+  `include "../tests/alu_shift_basic_test.sv"
   `include "../tests/alu_all_ops_3_5_test.sv"
 
   // счётчики для статистики тестов
@@ -66,6 +67,10 @@ module alu_tb;
 
     // 3) SUBTRACT (вычитание)
     test_sub_basic(success);
+    if (success) passed_tests++; else failed_tests++;
+
+    // 4) A PLUS A
+    test_shift_basic(success);
     if (success) passed_tests++; else failed_tests++;
   endtask
 
