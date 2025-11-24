@@ -27,7 +27,7 @@ task automatic test_shift_basic(output bit success);
 
     sum_ext       = {1'b0, A_log} + {1'b0, A_log};
     expected      = sum_ext[15:0];
-    expected_cout = sum_ext[16]; //тут важно еще смотреть перенос
+    expected_cout = ~sum_ext[16];
 
     alu_intf.a = A_log;
     alu_intf.b = B_log;

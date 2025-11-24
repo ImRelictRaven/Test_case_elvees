@@ -1,9 +1,10 @@
 VERILATOR ?= verilator
 TOP       ?= alu_tb
 
-SRC_RTL   := rtl/top_alu_16.v rtl/74181.v rtl/74182_CLA.v
-SRC_TB    := tb/alu_if.sv tb/alu_tb.sv
-C_SOURCES := sim_main.cpp
+SRC_RTL    := rtl/top_alu_16.v rtl/74181.v rtl/74182_CLA.v
+SRC_TB     := tb/alu_if.sv tb/alu_tb.sv
+SRC_TESTS  := $(wildcard tests/*.sv)
+C_SOURCES  := sim_main.cpp
 
 OBJ_DIR   := obj_dir
 EXE       := $(OBJ_DIR)/V$(TOP)
@@ -17,7 +18,10 @@ $(OBJ_DIR):
 
 build: $(EXE)
 
-$(EXE): $(SRC_RTL) $(SRC_TB) $(C_SOURCES) | $(OBJ_DIR)
+$(EXE): $(SRC_RTL) $(SRC_TB) $(SRC_TESTS) $(C_SOURCES) | $(OBJ_DIR)
+	# tests/*.sv подключаются через `include` внутри tb/alu_tb.sv,
+	# поэтому в команду Verilator их не передаём — только используем
+	# как зависимости, чтобы пересобирать модель при изменении тестов.
 	$(VERILATOR) -Wall -sv --cc $(SRC_RTL) $(SRC_TB) \
 	  -Wno-DECLFILENAME -Wno-TIMESCALEMOD -Wno-GENUNNAMED \
 	  -Wno-UNUSEDPARAM -Wno-UNUSEDSIGNAL -Wno-EOFNEWLINE \

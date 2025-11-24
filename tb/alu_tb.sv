@@ -22,6 +22,8 @@ module alu_tb;
   `include "../tests/alu_add_basic_test.sv"
   `include "../tests/alu_sub_basic_test.sv"
   `include "../tests/alu_shift_basic_test.sv"
+  `include "../tests/alu_carry_only_test.sv"
+  `include "../tests/alu_nocarry_only_test.sv"
   `include "../tests/alu_all_ops_3_5_test.sv"
 
   // счётчики для статистики тестов
@@ -72,6 +74,15 @@ module alu_tb;
     // 4) A PLUS A
     test_shift_basic(success);
     if (success) passed_tests++; else failed_tests++;
+
+    // 5) перенос при сложении (проверяем только Cout)
+    test_add_carry_only(success);
+    if (success) passed_tests++; else failed_tests++;
+
+    // 6) отсутствие переноса при сложении (проверяем только Cout)
+    test_add_nocarry_only(success);
+    if (success) passed_tests++; else failed_tests++;
+
   endtask
 
   task automatic report_results();
