@@ -19,9 +19,6 @@ $(OBJ_DIR):
 build: $(EXE)
 
 $(EXE): $(SRC_RTL) $(SRC_TB) $(SRC_TESTS) $(C_SOURCES) | $(OBJ_DIR)
-	# tests/*.sv подключаются через `include` внутри tb/alu_tb.sv,
-	# поэтому в команду Verilator их не передаём — только используем
-	# как зависимости, чтобы пересобирать модель при изменении тестов.
 	$(VERILATOR) -Wall -sv --cc $(SRC_RTL) $(SRC_TB) \
 	  -Wno-DECLFILENAME -Wno-TIMESCALEMOD -Wno-GENUNNAMED \
 	  -Wno-UNUSEDPARAM -Wno-UNUSEDSIGNAL -Wno-EOFNEWLINE \

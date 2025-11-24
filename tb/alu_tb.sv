@@ -4,18 +4,35 @@ module alu_tb;
 
   // интерфейс для связи testbench <-> DUT
   alu_if alu_intf();
+  
+  // Промежуточные wire для явного прокидывания сигналов
+  wire [15:0] dut_a_wire, dut_b_wire, dut_result_wire;
+  wire        dut_Cin_wire, dut_mode_wire, dut_Cout_wire, dut_nBo_wire, dut_nGo_wire;
+  wire [3:0]  dut_sel_wire;
+
+  // Подключение интерфейса к wire
+  assign dut_a_wire    = alu_intf.a;
+  assign dut_b_wire    = alu_intf.b;
+  assign dut_Cin_wire  = alu_intf.Cin;
+  assign dut_mode_wire = alu_intf.mode;
+  assign dut_sel_wire  = alu_intf.sel;
+  
+  assign alu_intf.result = dut_result_wire;
+  assign alu_intf.Cout   = dut_Cout_wire;
+  assign alu_intf.nBo    = dut_nBo_wire;
+  assign alu_intf.nGo    = dut_nGo_wire;
 
   // экземпляр DUT (16-разрядное АЛУ)
   alu16 dut (
-    .a      (alu_intf.a),
-    .b      (alu_intf.b),
-    .Cin    (alu_intf.Cin),
-    .mode   (alu_intf.mode),
-    .sel    (alu_intf.sel),
-    .result (alu_intf.result),
-    .Cout   (alu_intf.Cout),
-    .nBo    (alu_intf.nBo),
-    .nGo    (alu_intf.nGo)
+    .a      (dut_a_wire),
+    .b      (dut_b_wire),
+    .Cin    (dut_Cin_wire),
+    .mode   (dut_mode_wire),
+    .sel    (dut_sel_wire),
+    .result (dut_result_wire),
+    .Cout   (dut_Cout_wire),
+    .nBo    (dut_nBo_wire),
+    .nGo    (dut_nGo_wire)
   );
 
   // тесты
@@ -24,6 +41,9 @@ module alu_tb;
   `include "../tests/alu_shift_basic_test.sv"
   `include "../tests/alu_carry_only_test.sv"
   `include "../tests/alu_nocarry_only_test.sv"
+  `include "../tests/alu_and_basic_test.sv"
+  `include "../tests/alu_xor_basic_test.sv"
+  `include "../tests/alu_or_basic_test.sv"
   `include "../tests/alu_all_ops_3_5_test.sv"
 
   // счётчики для статистики тестов
@@ -83,6 +103,17 @@ module alu_tb;
     test_add_nocarry_only(success);
     if (success) passed_tests++; else failed_tests++;
 
+    // 7) логическая операция AND
+    test_and_basic(success);
+    if (success) passed_tests++; else failed_tests++;
+
+    // 8) логическая операция XOR
+    test_xor_basic(success);
+    if (success) passed_tests++; else failed_tests++;
+
+    // 9) логическая операция OR
+    test_or_basic(success);
+    if (success) passed_tests++; else failed_tests++;
   endtask
 
   task automatic report_results();
