@@ -26,7 +26,7 @@ $(OBJ_DIR):
 build: $(EXE)
 
 $(EXE): $(SRC_RTL) $(SRC_TB) $(SRC_TESTS) $(C_SOURCES) | $(OBJ_DIR)
-	$(VERILATOR) --cc -sv --timing --exe --build --top-module $(TOP) $(SRC_RTL) $(SRC_TB) \
+	$(VERILATOR) --cc -sv --timing --exe --build -j 0 --top-module $(TOP) $(SRC_RTL) $(SRC_TB) \
 	-Wall $(ERROR_IGNORE) \
 	$(C_SOURCES)
 
