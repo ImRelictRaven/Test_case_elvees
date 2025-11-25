@@ -11,28 +11,19 @@ module alu_tb;
   wire [3:0]  dut_sel_wire;
 
   // Подключение интерфейса к wire
-  assign dut_a_wire    = alu_intf.a;
-  assign dut_b_wire    = alu_intf.b;
-  assign dut_Cin_wire  = alu_intf.Cin;
-  assign dut_mode_wire = alu_intf.mode;
-  assign dut_sel_wire  = alu_intf.sel;
-  
-  assign alu_intf.result = dut_result_wire;
-  assign alu_intf.Cout   = dut_Cout_wire;
-  assign alu_intf.nBo    = dut_nBo_wire;
-  assign alu_intf.nGo    = dut_nGo_wire;
+  // Интерфейс сам по себе можно использовать
 
   // экземпляр DUT (16-разрядное АЛУ)
   alu16 dut (
-    .a      (dut_a_wire),
-    .b      (dut_b_wire),
-    .Cin    (dut_Cin_wire),
-    .mode   (dut_mode_wire),
-    .sel    (dut_sel_wire),
-    .result (dut_result_wire),
-    .Cout   (dut_Cout_wire),
-    .nBo    (dut_nBo_wire),
-    .nGo    (dut_nGo_wire)
+    .a      (alu_intf.a),
+    .b      (alu_intf.b),
+    .Cin    (alu_intf.Cin),
+    .mode   (alu_intf.mode),
+    .sel    (alu_intf.sel),
+    .result (alu_intf.result),
+    .Cout   (alu_intf.Cout),
+    .nBo    (alu_intf.nBo),
+    .nGo    (alu_intf.nGo)
   );
 
   // Monitor — пассивно наблюдает изменения на интерфейсе
