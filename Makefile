@@ -6,6 +6,13 @@ SRC_TB     := tb/alu_if.sv tb/alu_monitor.sv tb/alu_tb.sv
 SRC_TESTS  := $(wildcard tests/*.sv)
 C_SOURCES  := sim_main.cpp
 
+ERROR_IGNORE := -Wno-DECLFILENAME \
+				-Wno-TIMESCALEMOD \
+				-Wno-GENUNNAMED \
+				-Wno-UNUSEDPARAM \
+				-Wno-UNUSEDSIGNAL \
+				-Wno-EOFNEWLINE
+
 OBJ_DIR   := obj_dir
 EXE       := $(OBJ_DIR)/V$(TOP)
 
@@ -19,12 +26,9 @@ $(OBJ_DIR):
 build: $(EXE)
 
 $(EXE): $(SRC_RTL) $(SRC_TB) $(SRC_TESTS) $(C_SOURCES) | $(OBJ_DIR)
-	$(VERILATOR) -Wall -sv --cc --timing $(SRC_RTL) $(SRC_TB) \
-	  -Wno-DECLFILENAME -Wno-TIMESCALEMOD -Wno-GENUNNAMED \
-	  -Wno-UNUSEDPARAM -Wno-UNUSEDSIGNAL -Wno-EOFNEWLINE \
-	  --top-module $(TOP) \
-	  --exe $(C_SOURCES)
-	$(MAKE) -C $(OBJ_DIR) -f V$(TOP).mk -j$$(nproc) CXX="g++-13 -std=gnu++20 -fcoroutines"
+	$(VERILATOR) --cc -sv --timing --exe --build --top-module $(TOP) $(SRC_RTL) $(SRC_TB) \
+	-Wall $(ERROR_IGNORE) \
+	$(C_SOURCES)
 
 run: $(EXE)
 	$(EXE)
