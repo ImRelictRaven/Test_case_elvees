@@ -12,6 +12,8 @@ module alu_monitor (alu_if.monitor_mp mon_if);
   end
 
   // логируем изменения результата и переноса
+  // РЕкомендуется исп-ть always_comb
+
   always @(mon_if.result or mon_if.Cout or mon_if.a or mon_if.b or mon_if.sel or mon_if.mode) begin
     if (mon_if.result !== prev_result || mon_if.Cout !== prev_Cout) begin
       $display("[%0t] [monitor] mode=%b sel=%h Cin=%b a=%h b=%h -> result=%h Cout=%b",

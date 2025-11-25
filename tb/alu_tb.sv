@@ -30,6 +30,7 @@ module alu_tb;
   alu_monitor monitor_i (.mon_if(alu_intf));
 
   // тесты
+  // Рекомендуется упаковать в package
   `include "../tests/alu_add_basic_test.sv"
   `include "../tests/alu_sub_basic_test.sv"
   `include "../tests/alu_shift_basic_test.sv"
